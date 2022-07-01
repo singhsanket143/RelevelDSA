@@ -19,6 +19,7 @@ class CircularLinkedList {
         if(this.head == null) {
             this.head = newNode;
             this.tail = newNode;
+            this.tail.next = this.head;
             return;
         }
         newNode.next = this.head;
@@ -34,6 +35,7 @@ class CircularLinkedList {
         if(this.head == null) {
             this.head = newNode;
             this.tail = newNode;
+            this.tail.next = this.head;
             return;
         }
         this.tail.next = newNode;
@@ -62,6 +64,74 @@ class CircularLinkedList {
         temp.next = newNode;
     }
 
+    deleteAtHead() {
+        /**
+         * Time: O(1);
+         */
+        if(this.head == null) {
+            console.log("Cannot delete from an empty linked list");
+            return;
+        }
+        if(this.head.next == this.head) {
+            this.head = null;
+            this.tail = null;
+            return;
+        }
+        let newHead = this.head.next;
+        this.head.next = null;
+        this.tail.next = newHead;
+        this.head = newHead;
+    }
+
+    deleteAtTail() {
+        /**
+         * Time: O(n)
+         */
+        if(this.head == null) {
+            console.log("Cannot delete from an empty linked list");
+            return;
+        }
+        if(this.head.next == this.head) {
+            this.head = null;
+            this.tail = null;
+            return;
+        } 
+        let temp = this.head;
+        // iterate on the linked list to get the second last node
+        while(temp.next != this.tail) {
+            temp = temp.next;
+        }
+        temp.next = this.head;
+        this.tail.next = null;
+        this.tail = temp;
+    }
+
+    deleteAt(idx) {
+        /**
+         * Time: O(n)
+         */
+        if(idx == 0) {
+            this.deleteAtHead();
+            return;
+        }
+        let temp = this.head;
+        for(let i = 0; i < idx - 1 && temp != this.tail; i++) {
+            temp = temp.next;
+        }
+        // console.log(temp.data)
+        if(temp.next == this.tail) {
+            this.deleteAtTail();
+            return;
+        }
+        if(temp == this.tail) {
+            console.log("Index passed is out of bound");
+            return;
+        }
+        let toBeDeleted = temp.next;
+        temp.next = toBeDeleted.next;
+        toBeDeleted.next = null;
+    }
+
     display() {
         /**
          * Time: O(n)
@@ -80,9 +150,10 @@ class CircularLinkedList {
 }
 
 let ll = new CircularLinkedList();
-ll.insertAtTail(10);
-ll.insertAtTail(20);
-ll.insertAtTail(30);
-ll.insertAtTail(40);
-ll.insertAt(55, 6);
+ll.insertAtHead(10);
+ll.insertAtHead(20);
+ll.insertAtHead(30);
+ll.display();
+console.log("***");
+ll.deleteAt(3);
 ll.display();
