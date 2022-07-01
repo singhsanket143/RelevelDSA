@@ -119,6 +119,9 @@ class LinkedList {
     }
 
     display() {
+        /**
+         * Time: O(n)
+         */
         let temp = this.head;
         while(temp != null) {
             // we loop until we surpass the tail
@@ -128,6 +131,9 @@ class LinkedList {
     }
 
     getAt(idx) {
+        /**
+         * Time: O(n)
+         */
         let temp = this.head;
         for(let i = 0; i < idx && temp != null; i++) {
             temp = temp.next;
