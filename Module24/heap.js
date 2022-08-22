@@ -4,11 +4,11 @@ function swap(arr, a, b) {
     arr[a] = arr[b];
     arr[b] = temp;
 }
-
-class MinHeap {
+class Heap {
     // implementation of min heap
-    constructor() {
-        this.arr = [];
+    constructor(comp) {
+        this.arr = []; // this array will store triplet <value, row_num, index>
+        this.comp = comp; // this will be callback function
     }
 
     upheapify(idx) {
@@ -18,7 +18,7 @@ class MinHeap {
          */
         while(idx > 0) { // till the time we dont reach the root
             let pi = Math.floor((idx - 1) / 2);
-            if(this.arr[pi] < this.arr[idx]) break;
+            if(this.comp(this.arr[pi], this.arr[idx])) break;
             swap(this.arr, idx, pi);
             idx = pi;
         }
@@ -42,10 +42,10 @@ class MinHeap {
             let li = 2 * idx + 1;
             let ri = 2 * idx + 2;
             let smallest = idx;
-            if(li < this.arr.length && this.arr[li] < this.arr[smallest]) {
+            if(li < this.arr.length && this.comp(this.arr[li], this.arr[smallest])) {
                 smallest = li;
             }
-            if(ri < this.arr.length && this.arr[ri] < this.arr[smallest]) {
+            if(ri < this.arr.length && this.comp(this.arr[ri], this.arr[smallest])) {
                 smallest  = ri;
             }
             if(smallest == idx) {
@@ -69,43 +69,17 @@ class MinHeap {
         return this.arr[0];
     }
 
-    remove() {
-        swap(this.arr, 0, this.arr.length - 1);
-        this.arr.pop();
-        this.downHeapify(0);
-    }
-
-    isEmpty() {
-        return this.arr.length == 0;
-    }
-
     display() {
         console.log(this.arr);
     }
 }
 
-function sortNearlySortedArray(arr, k) {
-    /**
-     * Time: O(k + (n-k)logk)
-     * Space: O(k)
-     */
-    let hp = new MinHeap();
-    for(let i = 0; i < k+1; i++) {
-        hp.insert(arr[i]);
-    }
-    let idx = 0;
-    for(i = k + 1; i < arr.length; i++) {
-        arr[idx++] = hp.get();
-        hp.remove();
-        hp.insert(arr[i]);
-    }
-    while(!hp.isEmpty()) {
-        arr[idx++] = hp.get();
-        hp.remove();
-    }
-}
+const hp = new Heap((a, b) => {
+    return a > b;
+});
 
-arr = [2,6,3,12,56,8];
-k = 3;
-sortNearlySortedArray(arr, k);
-console.log(arr);
+hp.insert(10);
+hp.insert(20);
+hp.insert(30);
+console.log(hp.arr);
+console.log(hp.get());
